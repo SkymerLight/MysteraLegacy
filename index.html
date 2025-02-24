@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lettuce Puzzle</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            color: #2c3e50;
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .instructions {
+            color: #7f8c8d;
+            font-size: 14px;
+            text-align: center;
+            margin: 15px 0;
+            line-height: 1.4;
+        }
+
+        .g-text {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .p-text {
+            color: #f44336;
+            font-weight: bold;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .cell {
+            width: 90px;
+            height: 90px;
+            border: none;
+            border-radius: 12px;
+            font-size: 26px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .cell:hover {
+            transform: scale(1.05);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .cell.G {
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .cell.P {
+            background: linear-gradient(145deg, #f44336, #e53935);
+            color: white;
+        }
+
+        .number-label {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: bold;
+        }
+
+        #solveBtn {
+            padding: 15px 30px;
+            font-size: 18px;
+            background: linear-gradient(145deg, #2196F3, #1976D2);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 20px 0;
+            display: block;
+            width: 100%;
+        }
+
+        #solveBtn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4);
+        }
+
+        #solution {
+            font-size: 18px;
+            color: #2c3e50;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px dashed #2196F3;
+        }
+
+        .credits {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            .cell {
+                width: 70px;
+                height: 70px;
+                font-size: 20px;
+            }
+
+            .title {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Lettuce Puzzle</h1>
+            <p class="subtitle">Defina a configuração inicial:</p>
+            <div class="instructions">
+                <div><span class="g-text">G → Lettuce Grande</span></div>
+                <div><span class="p-text">P → Lettuce Pequeno</span></div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <button class="cell G" data-index="0">
+                <span class="number-label">1</span>
+                G
+            </button>
+            <button class="cell G" data-index="1">
+                <span class="number-label">2</span>
+                G
+            </button>
+            <button class="cell G" data-index="2">
+                <span class="number-label">3</span>
+                G
+            </button>
+            <button class="cell G" data-index="3">
+                <span class="number-label">4</span>
+                G
+            </button>
+            <button class="cell G" data-index="4">
+                <span class="number-label">5</span>
+                G
+            </button>
+            <button class="cell G" data-index="5">
+                <span class="number-label">6</span>
+                G
+            </button>
+            <button class="cell G" data-index="6">
+                <span class="number-label">7</span>
+                G
+            </button>
+            <button class="cell G" data-index="7">
+                <span class="number-label">8</span>
+                G
+            </button>
+            <button class="cell G" data-index="8">
+                <span class="number-label">9</span>
+                G
+            </button>
+        </div>
+
+        <button id="solveBtn">Resolver</button>
+        <div id="solution"></div>
+
+        <div class="credits">
+            <p>Criador: Skymer (Daniel M.)</p>
+            <p>Servidor: USTexas</p>
+            <p>Discord: Skymer#9220</p>
+        </div>
+    </div>
+
+    <script>
+        const cells = document.querySelectorAll('.cell');
+        const solveBtn = document.getElementById('solveBtn');
+        const solutionDiv = document.getElementById('solution');
+
+        const masks = [
+            0b000001011, 0b000010111, 0b00100110,
+            0b01011001, 0b10111010, 0b100110100,
+            0b11001000, 0b111010000, 0b110100000
+        ];
+
+        // Função para atualizar o estado visual
+        function updateCellState(cell, isG) {
+            const numberLabel = cell.querySelector('.number-label');
+            cell.innerHTML = `
+                ${numberLabel.outerHTML}
+                ${isG ? 'G' : 'P'}
+            `;
+            cell.classList.toggle('G', isG);
+            cell.classList.toggle('P', !isG);
+        }
+
+        // Clique nas células
+        cells.forEach(cell => {
+            cell.addEventListener('click', function () {
+                const currentIsG = this.classList.contains('G');
+                updateCellState(this, !currentIsG);
+            });
+        });
+
+        // Solucionador
+        solveBtn.addEventListener('click', function () {
+            let initialState = 0;
+            cells.forEach((cell, index) => {
+                if (cell.classList.contains('G')) {
+                    initialState |= (1 << index);
+                }
+            });
+
+            const solution = solve(initialState);
+
+            if (solution) {
+                const passos = solution.map(c => c + 1);
+                solutionDiv.innerHTML = `🎉 Sequência:<br>
+                    <strong style="color: #2196F3; font-size: 1.4em;">
+                    ${passos.join(' → ')}</strong>`;
+
+                // Animação dos passos
+                let step = 0;
+                const animateSolution = () => {
+                    if (step >= solution.length) return;
+                    const index = solution[step];
+                    cells[index].style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        cells[index].style.transform = '';
+                        step++;
+                        animateSolution();
+                    }, 500);
+                };
+                animateSolution();
+            } else {
+                solutionDiv.innerHTML = '⚠️ Nenhuma solução encontrada!';
+            }
+        });
+
+        // Algoritmo BFS
+        function solve(initial) {
+            const target = 0b111111111;
+            const visited = new Array(512).fill(false);
+            const queue = [{ state: initial, steps: [] }];
+
+            while (queue.length > 0) {
+                const { state, steps } = queue.shift();
+                if (state === target) return steps;
+                if (visited[state]) continue;
+                visited[state] = true;
+
+                for (let i = 0; i < 9; i++) {
+                    const newState = state ^ masks[i];
+                    if (!visited[newState]) {
+                        queue.push({ state: newState, steps: [...steps, i] });
+                    }
+                }
+            }
+            return null;
+        }
+    </script>
+</body>
+
+</html>
