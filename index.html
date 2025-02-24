@@ -4,6 +4,7 @@
 <head>
     <title>Lettuce Puzzle</title>
     <style>
+        /* Estilos gerais da página */
         body {
             display: flex;
             flex-direction: column;
@@ -15,6 +16,7 @@
             font-family: 'Arial', sans-serif;
         }
 
+        /* Container principal do conteúdo */
         .container {
             background-color: white;
             padding: 30px 40px;
@@ -24,11 +26,13 @@
             width: 100%;
         }
 
+        /* Estilo do cabeçalho */
         .header {
             text-align: center;
             margin-bottom: 30px;
         }
 
+        /* Título principal */
         .title {
             color: #2c3e50;
             font-size: 32px;
@@ -37,12 +41,14 @@
             letter-spacing: 1px;
         }
 
+        /* Subtítulo */
         .subtitle {
             color: #7f8c8d;
             font-size: 16px;
             margin: 10px 0;
         }
 
+        /* Instruções do jogo */
         .instructions {
             color: #7f8c8d;
             font-size: 14px;
@@ -51,16 +57,19 @@
             line-height: 1.4;
         }
 
+        /* Estilo para texto G (Grande) */
         .g-text {
             color: #4CAF50;
             font-weight: bold;
         }
 
+        /* Estilo para texto P (Pequeno) */
         .p-text {
             color: #f44336;
             font-weight: bold;
         }
 
+        /* Grid do puzzle (3x3) */
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -68,6 +77,7 @@
             margin-bottom: 25px;
         }
 
+        /* Estilo das caixas do grid */
         .cell {
             width: 90px;
             height: 90px;
@@ -81,21 +91,25 @@
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
         }
 
+        /* Efeito ao passar o mouse sobre as caixas */
         .cell:hover {
             transform: scale(1.05);
             box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.15);
         }
 
+        /* Estilo para caixas com estado G (Lettuce Grande) */
         .cell.G {
             background: linear-gradient(145deg, #4CAF50, #45a049);
             color: white;
         }
 
+        /* Estilo para caiixas com estado P (Lettuce Pequeno) */
         .cell.P {
             background: linear-gradient(145deg, #f44336, #e53935);
             color: white;
         }
 
+        /* Número da posição nas caixaa */
         .number-label {
             position: absolute;
             top: 8px;
@@ -105,6 +119,7 @@
             font-weight: bold;
         }
 
+        /* Botão de resolver */
         #solveBtn {
             padding: 15px 30px;
             font-size: 18px;
@@ -119,11 +134,13 @@
             width: 100%;
         }
 
+        /* Efeito ao passar o mouse sobre o botão de resolver */
         #solveBtn:hover {
             transform: scale(1.02);
             box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4);
         }
 
+        /* Área de exibição da solução */
         #solution {
             font-size: 18px;
             color: #2c3e50;
@@ -134,6 +151,7 @@
             border: 2px dashed #2196F3;
         }
 
+        /* Créditos do criador */
         .credits {
             margin-top: 30px;
             text-align: center;
@@ -142,6 +160,36 @@
             line-height: 1.5;
         }
 
+        /* Estilo do botão do GitHub */
+        .github-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background-color: #24292e;
+            /* Cor do GitHub */
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        /* Efeito ao passar o mouse sobre o botão do GitHub */
+        .github-button:hover {
+            background-color: #2c3138;
+            /* Cor mais clara ao passar o mouse */
+        }
+
+        /* Ícone do GitHub no botão */
+        .github-button img {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Estilos para dispositivos móveis */
         @media (max-width: 480px) {
             .cell {
                 width: 70px;
@@ -157,7 +205,9 @@
 </head>
 
 <body>
+    <!-- Container principal -->
     <div class="container">
+        <!-- Cabeçalho com título e instruções -->
         <div class="header">
             <h1 class="title">Lettuce Puzzle</h1>
             <p class="subtitle">Defina a configuração inicial:</p>
@@ -167,7 +217,9 @@
             </div>
         </div>
 
+        <!-- Grid do puzzle (3x3) -->
         <div class="grid">
+            <!-- Células do grid (1 a 9) -->
             <button class="cell G" data-index="0">
                 <span class="number-label">1</span>
                 G
@@ -206,9 +258,19 @@
             </button>
         </div>
 
+        <!-- Botão para resolver o puzzle -->
         <button id="solveBtn">Resolver</button>
+
+        <!-- Área para exibir a solução -->
         <div id="solution"></div>
 
+        <!-- Botão do GitHub -->
+        <a href="https://github.com/SkymerLight/MysteraLegacy" class="github-button" target="_blank">
+            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo">
+            Ver no GitHub
+        </a>
+
+        <!-- Créditos do criador -->
         <div class="credits">
             <p>Criador: Skymer (Daniel M.)</p>
             <p>Servidor: USTexas</p>
@@ -217,17 +279,21 @@
     </div>
 
     <script>
+        // Seleciona todas as caixsa do grid
         const cells = document.querySelectorAll('.cell');
+        // Seleciona o botão de resolver
         const solveBtn = document.getElementById('solveBtn');
+        // Seleciona a área de exibição da solução
         const solutionDiv = document.getElementById('solution');
 
+        // Máscaras para representar as mudanças ao clicar em cada caixa
         const masks = [
             0b000001011, 0b000010111, 0b00100110,
             0b01011001, 0b10111010, 0b100110100,
             0b11001000, 0b111010000, 0b110100000
         ];
 
-        // Função para atualizar o estado visual
+        // Função para atualizar o estado visual de uma caixa
         function updateCellState(cell, isG) {
             const numberLabel = cell.querySelector('.number-label');
             cell.innerHTML = `
@@ -238,7 +304,7 @@
             cell.classList.toggle('P', !isG);
         }
 
-        // Clique nas células
+        // Adiciona evento de clique para cada caixa
         cells.forEach(cell => {
             cell.addEventListener('click', function () {
                 const currentIsG = this.classList.contains('G');
@@ -246,24 +312,27 @@
             });
         });
 
-        // Solucionador
+        // Adiciona evento de clique ao botão de resolver
         solveBtn.addEventListener('click', function () {
             let initialState = 0;
+            // Converte o estado atual do grid em um número binário
             cells.forEach((cell, index) => {
                 if (cell.classList.contains('G')) {
                     initialState |= (1 << index);
                 }
             });
 
+            // Encontra a solução usando o algoritmo BFS
             const solution = solve(initialState);
 
             if (solution) {
+                // Exibe a solução na tela
                 const passos = solution.map(c => c + 1);
                 solutionDiv.innerHTML = `🎉 Sequência:<br>
                     <strong style="color: #2196F3; font-size: 1.4em;">
                     ${passos.join(' → ')}</strong>`;
 
-                // Animação dos passos
+                // Animação dos passos da solução
                 let step = 0;
                 const animateSolution = () => {
                     if (step >= solution.length) return;
@@ -277,11 +346,12 @@
                 };
                 animateSolution();
             } else {
+                // Exibe mensagem se não houver solução. Ou seja! Vc é burro e só tinha um trabalho e não fez
                 solutionDiv.innerHTML = '⚠️ Nenhuma solução encontrada!';
             }
         });
 
-        // Algoritmo BFS
+        // Algoritmo BFS para resolver o puzzle
         function solve(initial) {
             const target = 0b111111111;
             const visited = new Array(512).fill(false);
@@ -293,6 +363,7 @@
                 if (visited[state]) continue;
                 visited[state] = true;
 
+
                 for (let i = 0; i < 9; i++) {
                     const newState = state ^ masks[i];
                     if (!visited[newState]) {
@@ -300,7 +371,7 @@
                     }
                 }
             }
-            return null;
+            return null; // Retorna null se não houver solução
         }
     </script>
 </body>
