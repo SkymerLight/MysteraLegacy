@@ -205,9 +205,9 @@
 </head>
 
 <body>
-    /* <-- Container principal -->*/
+    <!-- Container principal -->
     <div class="container">
-       /* <-- Cabeçalho com título e instruções -->*/
+        <!-- Cabeçalho com título e instruções -->
         <div class="header">
             <h1 class="title">Lettuce Puzzle</h1>
             <p class="subtitle">Defina a configuração inicial:</p>
@@ -217,7 +217,7 @@
             </div>
         </div>
 
-        /*<-- Grid do puzzle (3x3) -->*/
+        <!-- Grid do puzzle (3x3) -->
         <div class="grid">
             <!-- Células do grid (1 a 9) -->
             <button class="cell G" data-index="0">
@@ -258,20 +258,20 @@
             </button>
         </div>
 
-        /*<-- Botão para resolver o puzzle -->*/
+        <!-- Botão para resolver o puzzle -->
         <button id="solveBtn">Resolver</button>
 
-        /*<-- Área para exibir a solução -->*/
+        <!-- Área para exibir a solução -->
         <div id="solution"></div>
 
-        /*<-- Botão do GitHub -->*/
+        <!-- Botão do GitHub -->
         <a href="https://github.com/SkymerLight/MysteraLegacy" class="github-button" target="_blank">
             <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo">
             Ver no GitHub
         </a>
 
-        /*sou muito sem oq fazer puta que pariu*/ 
-        /*<-- Créditos do criador -->*/
+        //SOu muito sem que fazer mesmo
+        <!-- Créditos do criador -->
         <div class="credits">
             <p>Criador: Skymer (Daniel M.)</p>
             <p>Servidor: USTexas</p>
@@ -352,7 +352,7 @@
             }
         });
 
-        // Algoritmo BFS para resolver o puzzle, esse caralho!!!
+        // Algoritmo BFS para resolver o puzzle. A regra é clara, se ta servindo sem erro, não muda nada vida segue
         function solve(initial) {
             const target = 0b111111111;
             const visited = new Array(512).fill(false);
@@ -364,7 +364,7 @@
                 if (visited[state]) continue;
                 visited[state] = true;
 
-                //A regra é clara, se funcionou sem erro, esta certo
+
                 for (let i = 0; i < 9; i++) {
                     const newState = state ^ masks[i];
                     if (!visited[newState]) {
