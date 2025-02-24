@@ -51,10 +51,20 @@
             line-height: 1.4;
         }
 
+        .g-text {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .p-text {
+            color: #f44336;
+            font-weight: bold;
+        }
+
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
+            gap: 5px;
             margin-bottom: 25px;
         }
 
@@ -67,10 +77,8 @@
             cursor: pointer;
             transition: all 0.3s;
             position: relative;
-            background: #f0f0f0;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-            background-size: cover;
-            background-position: center;
         }
 
         .cell:hover {
@@ -79,11 +87,13 @@
         }
 
         .cell.G {
-            background-image: url('images/lettuce-grande.png');
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            color: white;
         }
 
         .cell.P {
-            background-image: url('images/lettuce-pequeno.png');
+            background: linear-gradient(145deg, #f44336, #e53935);
+            color: white;
         }
 
         .number-label {
@@ -93,7 +103,6 @@
             font-size: 14px;
             color: rgba(255, 255, 255, 0.8);
             font-weight: bold;
-            text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
         }
 
         #solveBtn {
@@ -105,7 +114,7 @@
             border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s;
-            margin: 20px 0;
+            margin: 20px 0 10px;
             display: block;
             width: 100%;
         }
@@ -123,6 +132,7 @@
             border-radius: 10px;
             text-align: center;
             border: 2px dashed #2196F3;
+            margin: 10px 0;
         }
 
         .credits {
@@ -161,11 +171,88 @@
             .cell {
                 width: 70px;
                 height: 70px;
+                font-size: 20px;
             }
-
             .title {
                 font-size: 26px;
             }
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        #resetBtn {
+            padding: 12px 25px;
+            background: linear-gradient(145deg, #666, #444);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        #resetBtn:hover {
+            transform: scale(1.02);
+            background: linear-gradient(145deg, #555, #333);
+        }
+
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top-color: #2196F3;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        [data-mode="images"] .cell {
+            background: #f8f9fa !important;
+            color: transparent !important;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        [data-mode="images"] .cell.G {
+            background-image: url('images/lettuce-grande.png') !important;
+            background-size: 60% !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+
+        [data-mode="images"] .cell.P {
+            background-image: url('images/lettuce-pequeno.png') !important;
+            background-size: 60% !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+
+        [data-mode="images"] .number-label {
+            color: rgba(0, 0, 0, 0.7) !important;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9) !important;
+        }
+
+        #toggleMode {
+            padding: 12px 25px;
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        #toggleMode:hover {
+            transform: scale(1.02);
+            background: linear-gradient(145deg, #45a049, #4CAF50);
         }
     </style>
 </head>
@@ -181,33 +268,47 @@
             </div>
         </div>
 
+        <div class="button-group">
+            <button id="toggleMode">Alternar Modo</button>
+            <button id="resetBtn">Reiniciar</button>
+        </div>
+
         <div class="grid">
             <button class="cell G" data-index="0">
                 <span class="number-label">1</span>
+                G
             </button>
             <button class="cell G" data-index="1">
                 <span class="number-label">2</span>
+                G
             </button>
             <button class="cell G" data-index="2">
                 <span class="number-label">3</span>
+                G
             </button>
             <button class="cell G" data-index="3">
                 <span class="number-label">4</span>
+                G
             </button>
             <button class="cell G" data-index="4">
                 <span class="number-label">5</span>
+                G
             </button>
             <button class="cell G" data-index="5">
                 <span class="number-label">6</span>
+                G
             </button>
             <button class="cell G" data-index="6">
                 <span class="number-label">7</span>
+                G
             </button>
             <button class="cell G" data-index="7">
                 <span class="number-label">8</span>
+                G
             </button>
             <button class="cell G" data-index="8">
                 <span class="number-label">9</span>
+                G
             </button>
         </div>
 
@@ -230,6 +331,9 @@
         const cells = document.querySelectorAll('.cell');
         const solveBtn = document.getElementById('solveBtn');
         const solutionDiv = document.getElementById('solution');
+        const toggleMode = document.getElementById('toggleMode');
+        const resetBtn = document.getElementById('resetBtn');
+        let isImageMode = false;
 
         const masks = [
             0b000001011, 0b000010111, 0b00100110,
@@ -237,52 +341,86 @@
             0b11001000, 0b111010000, 0b110100000
         ];
 
+        function preloadImages() {
+            const images = [
+                'images/lettuce-grande.png',
+                'images/lettuce-pequeno.png'
+            ];
+            images.forEach(src => new Image().src = src);
+        }
+
         function updateCellState(cell, isG) {
             const numberLabel = cell.querySelector('.number-label');
-            cell.innerHTML = numberLabel.outerHTML;
+            cell.innerHTML = isImageMode 
+                ? numberLabel.outerHTML
+                : `${numberLabel.outerHTML}${isG ? 'G' : 'P'}`;
+            
             cell.classList.toggle('G', isG);
             cell.classList.toggle('P', !isG);
         }
 
+        function resetPuzzle() {
+            cells.forEach(cell => updateCellState(cell, true));
+            solutionDiv.innerHTML = '';
+        }
+
         cells.forEach(cell => {
-            cell.addEventListener('click', function () {
+            cell.addEventListener('click', function() {
                 const currentIsG = this.classList.contains('G');
                 updateCellState(this, !currentIsG);
             });
         });
 
-        solveBtn.addEventListener('click', function () {
-            let initialState = 0;
-            cells.forEach((cell, index) => {
-                if (cell.classList.contains('G')) {
-                    initialState |= (1 << index);
-                }
+        toggleMode.addEventListener('click', () => {
+            isImageMode = !isImageMode;
+            document.body.setAttribute('data-mode', isImageMode ? 'images' : 'text');
+            toggleMode.textContent = isImageMode 
+                ? 'Alternar para Modo Texto' 
+                : 'Alternar para Modo Imagens';
+            cells.forEach(cell => {
+                const isG = cell.classList.contains('G');
+                updateCellState(cell, isG);
             });
-
-            const solution = solve(initialState);
-
-            if (solution) {
-                const passos = solution.map(c => c + 1);
-                solutionDiv.innerHTML = `🎉 Sequência:<br>
-                    <strong style="color: #2196F3; font-size: 1.4em;">
-                    ${passos.join(' → ')}</strong>`;
-
-                let step = 0;
-                const animateSolution = () => {
-                    if (step >= solution.length) return;
-                    const index = solution[step];
-                    cells[index].style.transform = 'scale(1.2)';
-                    setTimeout(() => {
-                        cells[index].style.transform = '';
-                        step++;
-                        animateSolution();
-                    }, 500);
-                };
-                animateSolution();
-            } else {
-                solutionDiv.innerHTML = '⚠️ Nenhuma solução encontrada!';
-            }
         });
+
+        solveBtn.addEventListener('click', function() {
+            solutionDiv.innerHTML = `<div class="loader"></div> Calculando solução...`;
+            
+            setTimeout(() => {
+                let initialState = 0;
+                cells.forEach((cell, index) => {
+                    if (cell.classList.contains('G')) {
+                        initialState |= (1 << index);
+                    }
+                });
+
+                const solution = solve(initialState);
+
+                if (solution) {
+                    const passos = solution.map(c => c + 1);
+                    solutionDiv.innerHTML = `🎉 Sequência:<br>
+                        <strong style="color: #2196F3; font-size: 1.4em;">
+                        ${passos.join(' → ')}</strong>`;
+                    
+                    let step = 0;
+                    const animateSolution = () => {
+                        if (step >= solution.length) return;
+                        const index = solution[step];
+                        cells[index].style.transform = 'scale(1.2)';
+                        setTimeout(() => {
+                            cells[index].style.transform = '';
+                            step++;
+                            animateSolution();
+                        }, 500);
+                    };
+                    animateSolution();
+                } else {
+                    solutionDiv.innerHTML = '⚠️ Nenhuma solução encontrada!';
+                }
+            }, 500);
+        });
+
+        resetBtn.addEventListener('click', resetPuzzle);
 
         function solve(initial) {
             const target = 0b111111111;
@@ -304,7 +442,12 @@
             }
             return null;
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            preloadImages();
+            document.body.setAttribute('data-mode', 'text');
+            resetPuzzle();
+        });
     </script>
 </body>
-
 </html>
