@@ -173,6 +173,7 @@
                 height: 70px;
                 font-size: 20px;
             }
+
             .title {
                 font-size: 26px;
             }
@@ -211,8 +212,13 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         [data-mode="images"] .cell {
@@ -351,10 +357,10 @@
 
         function updateCellState(cell, isG) {
             const numberLabel = cell.querySelector('.number-label');
-            cell.innerHTML = isImageMode 
+            cell.innerHTML = isImageMode
                 ? numberLabel.outerHTML
                 : `${numberLabel.outerHTML}${isG ? 'G' : 'P'}`;
-            
+
             cell.classList.toggle('G', isG);
             cell.classList.toggle('P', !isG);
         }
@@ -365,7 +371,7 @@
         }
 
         cells.forEach(cell => {
-            cell.addEventListener('click', function() {
+            cell.addEventListener('click', function () {
                 const currentIsG = this.classList.contains('G');
                 updateCellState(this, !currentIsG);
             });
@@ -374,8 +380,8 @@
         toggleMode.addEventListener('click', () => {
             isImageMode = !isImageMode;
             document.body.setAttribute('data-mode', isImageMode ? 'images' : 'text');
-            toggleMode.textContent = isImageMode 
-                ? 'Alternar para Modo Texto' 
+            toggleMode.textContent = isImageMode
+                ? 'Alternar para Modo Texto'
                 : 'Alternar para Modo Imagens';
             cells.forEach(cell => {
                 const isG = cell.classList.contains('G');
@@ -383,9 +389,9 @@
             });
         });
 
-        solveBtn.addEventListener('click', function() {
+        solveBtn.addEventListener('click', function () {
             solutionDiv.innerHTML = `<div class="loader"></div> Calculando solução...`;
-            
+
             setTimeout(() => {
                 let initialState = 0;
                 cells.forEach((cell, index) => {
@@ -401,7 +407,7 @@
                     solutionDiv.innerHTML = `🎉 Sequência:<br>
                         <strong style="color: #2196F3; font-size: 1.4em;">
                         ${passos.join(' → ')}</strong>`;
-                    
+
                     let step = 0;
                     const animateSolution = () => {
                         if (step >= solution.length) return;
@@ -450,4 +456,5 @@
         });
     </script>
 </body>
+
 </html>
