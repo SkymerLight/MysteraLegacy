@@ -51,6 +51,11 @@
             line-height: 1.4;
         }
 
+        .b-text {
+            color: #2196F3;
+            font-weight: bold;
+        }
+
         .g-text {
             color: #4CAF50;
             font-weight: bold;
@@ -79,6 +84,10 @@
             position: relative;
             background: linear-gradient(145deg, #ffffff, #f0f0f0);
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            background-repeat: no-repeat;
+            background-position: center;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
         }
 
         .cell:hover {
@@ -87,13 +96,15 @@
         }
 
         .cell.G {
-            background: linear-gradient(145deg, #4CAF50, #45a049);
-            color: white;
+            background-image: url('images/lettuce-Grande.png');
+            background-size: 70px;
+            color: transparent;
         }
 
         .cell.P {
-            background: linear-gradient(145deg, #f44336, #e53935);
-            color: white;
+            background-image: url('images/lettuce-Pequena.png');
+            background-size: 50px;
+            color: transparent;
         }
 
         .number-label {
@@ -101,8 +112,9 @@
             top: 8px;
             left: 8px;
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(0, 0, 0, 0.7);
             font-weight: bold;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
         }
 
         #solveBtn {
@@ -167,22 +179,11 @@
             height: 20px;
         }
 
-        @media (max-width: 480px) {
-            .cell {
-                width: 70px;
-                height: 70px;
-                font-size: 20px;
-            }
-
-            .title {
-                font-size: 26px;
-            }
-        }
-
         .button-group {
             display: flex;
             gap: 10px;
             margin: 15px 0;
+            width: 100%;
         }
 
         #resetBtn {
@@ -193,11 +194,29 @@
             border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s;
+            flex: 1;
         }
 
         #resetBtn:hover {
             transform: scale(1.02);
             background: linear-gradient(145deg, #555, #333);
+        }
+
+        #toggleMode {
+            padding: 12px 25px;
+            background: linear-gradient(145deg, #9C27B0, #6A1B9A);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+        }
+
+        #toggleMode:hover {
+            transform: scale(1.02);
+            background: linear-gradient(145deg, #8E24AA, #5E1C79);
+            box-shadow: 0 4px 15px rgba(156, 39, 176, 0.4);
         }
 
         .loader {
@@ -221,101 +240,82 @@
             }
         }
 
-        [data-mode="images"] .cell {
-            background: #f8f9fa !important;
-            color: transparent !important;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1) !important;
+        .solution-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 255, 0.3);
+            border-radius: 12px;
+            pointer-events: none;
+            animation: pulse 2s infinite;
         }
 
-        [data-mode="images"] .cell.G {
-            background-image: url('images/lettuce-grande.png') !important;
-            background-size: 60% !important;
-            background-repeat: no-repeat !important;
-            background-position: center !important;
+        .solution-final-overlay {
+            animation: none;
+            background-color: rgba(0, 0, 255, 0.4);
         }
 
-        [data-mode="images"] .cell.P {
-            background-image: url('images/lettuce-pequeno.png') !important;
-            background-size: 60% !important;
-            background-repeat: no-repeat !important;
-            background-position: center !important;
+        @keyframes pulse {
+            0% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+
+            100% {
+                opacity: 0.3;
+            }
         }
 
-        [data-mode="images"] .number-label {
-            color: rgba(0, 0, 0, 0.7) !important;
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9) !important;
+        .text-mode .cell {
+            background: linear-gradient(145deg, #ffffff, #f0f0f0) !important;
         }
 
-        #toggleMode {
-            padding: 12px 25px;
-            background: linear-gradient(145deg, #4CAF50, #45a049);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s;
+        .text-mode .cell.G {
+            background: linear-gradient(145deg, #4CAF50, #45a049) !important;
+            color: white !important;
         }
 
-        #toggleMode:hover {
-            transform: scale(1.02);
-            background: linear-gradient(145deg, #45a049, #4CAF50);
+        .text-mode .cell.P {
+            background: linear-gradient(145deg, #f44336, #e53935) !important;
+            color: white !important;
         }
     </style>
 </head>
 
-<body>
+<body class="text-mode">
     <div class="container">
         <div class="header">
             <h1 class="title">Lettuce Puzzle</h1>
             <p class="subtitle">Defina a configuração inicial:</p>
             <div class="instructions">
-                <div><span class="g-text">G → Lettuce Grande</span></div>
-                <div><span class="p-text">P → Lettuce Pequeno</span></div>
+                <div><span class="b-text">Clique para alternar entre</span></div>
+                <div>
+                    <span class="g-text">Grande (G)</span> e
+                    <span class="p-text">Pequeno (P)</span>
+                </div>
             </div>
         </div>
 
         <div class="button-group">
-            <button id="toggleMode">Alternar Modo</button>
+            <button id="toggleMode">Modo Imagens</button>
             <button id="resetBtn">Reiniciar</button>
         </div>
 
         <div class="grid">
-            <button class="cell G" data-index="0">
-                <span class="number-label">1</span>
-                G
-            </button>
-            <button class="cell G" data-index="1">
-                <span class="number-label">2</span>
-                G
-            </button>
-            <button class="cell G" data-index="2">
-                <span class="number-label">3</span>
-                G
-            </button>
-            <button class="cell G" data-index="3">
-                <span class="number-label">4</span>
-                G
-            </button>
-            <button class="cell G" data-index="4">
-                <span class="number-label">5</span>
-                G
-            </button>
-            <button class="cell G" data-index="5">
-                <span class="number-label">6</span>
-                G
-            </button>
-            <button class="cell G" data-index="6">
-                <span class="number-label">7</span>
-                G
-            </button>
-            <button class="cell G" data-index="7">
-                <span class="number-label">8</span>
-                G
-            </button>
-            <button class="cell G" data-index="8">
-                <span class="number-label">9</span>
-                G
-            </button>
+            <button class="cell G" data-index="0"><span class="number-label">1</span>G</button>
+            <button class="cell G" data-index="1"><span class="number-label">2</span>G</button>
+            <button class="cell G" data-index="2"><span class="number-label">3</span>G</button>
+            <button class="cell G" data-index="3"><span class="number-label">4</span>G</button>
+            <button class="cell G" data-index="4"><span class="number-label">5</span>G</button>
+            <button class="cell G" data-index="5"><span class="number-label">6</span>G</button>
+            <button class="cell G" data-index="6"><span class="number-label">7</span>G</button>
+            <button class="cell G" data-index="7"><span class="number-label">8</span>G</button>
+            <button class="cell G" data-index="8"><span class="number-label">9</span>G</button>
         </div>
 
         <button id="solveBtn">Resolver</button>
@@ -349,8 +349,8 @@
 
         function preloadImages() {
             const images = [
-                'images/lettuce-grande.png',
-                'images/lettuce-pequeno.png'
+                'images/lettuce-Grande.png',
+                'images/lettuce-Pequena.png'
             ];
             images.forEach(src => new Image().src = src);
         }
@@ -358,8 +358,8 @@
         function updateCellState(cell, isG) {
             const numberLabel = cell.querySelector('.number-label');
             cell.innerHTML = isImageMode
-                ? numberLabel.outerHTML
-                : `${numberLabel.outerHTML}${isG ? 'G' : 'P'}`;
+                ? `<span class="number-label">${numberLabel.textContent}</span>`
+                : `<span class="number-label">${numberLabel.textContent}</span>${isG ? 'G' : 'P'}`;
 
             cell.classList.toggle('G', isG);
             cell.classList.toggle('P', !isG);
@@ -368,6 +368,7 @@
         function resetPuzzle() {
             cells.forEach(cell => updateCellState(cell, true));
             solutionDiv.innerHTML = '';
+            document.querySelectorAll('.solution-overlay').forEach(el => el.remove());
         }
 
         cells.forEach(cell => {
@@ -379,10 +380,10 @@
 
         toggleMode.addEventListener('click', () => {
             isImageMode = !isImageMode;
-            document.body.setAttribute('data-mode', isImageMode ? 'images' : 'text');
+            document.body.classList.toggle('text-mode', !isImageMode);
             toggleMode.textContent = isImageMode
-                ? 'Alternar para Modo Texto'
-                : 'Alternar para Modo Imagens';
+                ? 'Modo Texto'
+                : 'Modo Imagens';
             cells.forEach(cell => {
                 const isG = cell.classList.contains('G');
                 updateCellState(cell, isG);
@@ -408,23 +409,42 @@
                         <strong style="color: #2196F3; font-size: 1.4em;">
                         ${passos.join(' → ')}</strong>`;
 
-                    let step = 0;
-                    const animateSolution = () => {
-                        if (step >= solution.length) return;
-                        const index = solution[step];
-                        cells[index].style.transform = 'scale(1.2)';
-                        setTimeout(() => {
-                            cells[index].style.transform = '';
-                            step++;
-                            animateSolution();
-                        }, 500);
-                    };
-                    animateSolution();
+                    animateSolution(solution);
                 } else {
                     solutionDiv.innerHTML = '⚠️ Nenhuma solução encontrada!';
                 }
             }, 500);
         });
+
+        function animateSolution(solution) {
+            let step = 0;
+            const overlays = [];
+
+            const showStep = () => {
+                if (step >= solution.length) {
+                    overlays.forEach(overlay => {
+                        overlay.classList.add('solution-final-overlay');
+                    });
+                    return;
+                }
+
+                const index = solution[step];
+                const cell = cells[index];
+
+                const existing = cell.querySelectorAll('.solution-overlay');
+                existing.forEach(el => el.remove());
+
+                const overlay = document.createElement('div');
+                overlay.className = 'solution-overlay';
+                cell.appendChild(overlay);
+                overlays.push(overlay);
+
+                step++;
+                setTimeout(showStep, 1000);
+            };
+
+            showStep();
+        }
 
         resetBtn.addEventListener('click', resetPuzzle);
 
@@ -451,7 +471,6 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             preloadImages();
-            document.body.setAttribute('data-mode', 'text');
             resetPuzzle();
         });
     </script>
